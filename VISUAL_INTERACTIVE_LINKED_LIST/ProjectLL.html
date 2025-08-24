@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,57 +12,29 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-
         .node {
             width: 60px;
             height: 60px;
             transition: all 0.5s ease-in-out;
             z-index: 10;
         }
-
         .node-data {
-            border-right: 2px solid #60a5fa;
-            /* A subtle blue */
+            border-right: 2px solid #60a5fa; /* A subtle blue */
         }
-
         .node-highlight {
-            background-color: #fbbf24 !important;
-            /* Amber-400 */
+            background-color: #fbbf24 !important; /* Amber-400 */
             transform: scale(1.1);
         }
-
-        .node-new {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .node-delete {
-            animation: fadeOut 0.5s ease-in-out forwards;
-        }
-
+        .node-new { animation: fadeIn 0.5s ease-in-out; }
+        .node-delete { animation: fadeOut 0.5s ease-in-out forwards; }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
         }
-
         @keyframes fadeOut {
-            from {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            to {
-                opacity: 0;
-                transform: scale(0.5);
-            }
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.5); }
         }
-
         #canvas svg {
             position: absolute;
             top: 0;
@@ -73,25 +44,23 @@
             z-index: 5;
             overflow: visible;
         }
-
         .tab-btn.active {
-            background-color: #3b82f6;
-            /* blue-500 */
+            background-color: #3b82f6; /* blue-500 */
             color: white;
             font-weight: 600;
         }
-
         #code-display .line.highlight {
-            background-color: #fef9c3;
-            /* yellow-100 */
-            border-left-color: #facc15;
-            /* yellow-400 */
+            background-color: #fef9c3; /* yellow-100 */
+            border-left-color: #facc15; /* yellow-400 */
+        }
+        .code-toggle-btn.active {
+            background-color: #6366f1; /* indigo-500 */
+            color: white;
         }
     </style>
     <link rel="preconnect" href="https://rsms.me/">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
-
 <body class="bg-slate-100 text-slate-800">
 
     <div class="container mx-auto p-4 md:p-8">
@@ -106,12 +75,9 @@
                 <div class="bg-white p-6 rounded-xl shadow-lg sticky top-8">
                     <div class="mb-4">
                         <div class="flex border border-slate-300 rounded-lg p-1 bg-slate-100">
-                            <button id="tab-singly" class="tab-btn flex-1 p-2 rounded-md text-sm transition"
-                                onclick="ll.setListType('singly')">Singly</button>
-                            <button id="tab-doubly" class="tab-btn flex-1 p-2 rounded-md text-sm transition"
-                                onclick="ll.setListType('doubly')">Doubly</button>
-                            <button id="tab-circular" class="tab-btn flex-1 p-2 rounded-md text-sm transition"
-                                onclick="ll.setListType('circular')">Circular</button>
+                            <button id="tab-singly" class="tab-btn flex-1 p-2 rounded-md text-sm transition" onclick="ll.setListType('singly')">Singly</button>
+                            <button id="tab-doubly" class="tab-btn flex-1 p-2 rounded-md text-sm transition" onclick="ll.setListType('doubly')">Doubly</button>
+                            <button id="tab-circular" class="tab-btn flex-1 p-2 rounded-md text-sm transition" onclick="ll.setListType('circular')">Circular</button>
                         </div>
                     </div>
                     <h2 class="text-2xl font-bold mb-4 border-b pb-2">Operations</h2>
@@ -120,60 +86,35 @@
                         <details class="bg-slate-50 p-4 rounded-lg border group">
                             <summary class="font-semibold text-blue-600 cursor-pointer">Insert</summary>
                             <div class="mt-4">
-                                <input type="number" id="insert-val" placeholder="Value"
-                                    class="w-full p-2 border rounded mb-2">
-                                <input type="number" id="insert-pos" placeholder="Position (optional)"
-                                    class="w-full p-2 border rounded mb-2">
-                                <button onclick="ll.prepareAnimation('insertAtBeginning')"
-                                    class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition mb-1 text-sm">At
-                                    Beginning</button>
-                                <button onclick="ll.prepareAnimation('insertAtEnd')"
-                                    class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition mb-1 text-sm">At
-                                    End</button>
-                                <button onclick="ll.prepareAnimation('insertAtPosition')"
-                                    class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition text-sm">At
-                                    Position</button>
+                                <input type="number" id="insert-val" placeholder="Value" class="w-full p-2 border rounded mb-2">
+                                <input type="number" id="insert-pos" placeholder="Position (optional)" class="w-full p-2 border rounded mb-2">
+                                <button onclick="ll.prepareAnimation('insertAtBeginning')" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition mb-1 text-sm">At Beginning</button>
+                                <button onclick="ll.prepareAnimation('insertAtEnd')" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition mb-1 text-sm">At End</button>
+                                <button onclick="ll.prepareAnimation('insertAtPosition')" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition text-sm">At Position</button>
                             </div>
                         </details>
 
                         <!-- Delete Operations -->
                         <details class="bg-slate-50 p-4 rounded-lg border group">
                             <summary class="font-semibold text-red-600 cursor-pointer">Delete</summary>
-                            <div class="mt-4">
-                                <input type="number" id="delete-key" placeholder="Key (for by key)"
-                                    class="w-full p-2 border rounded mb-2">
-                                <input type="number" id="delete-pos" placeholder="Position"
-                                    class="w-full p-2 border rounded mb-2">
-                                <button onclick="ll.prepareAnimation('deleteFromBeginning')"
-                                    class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition mb-1 text-sm">From
-                                    Beginning</button>
-                                <button onclick="ll.prepareAnimation('deleteFromEnd')"
-                                    class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition mb-1 text-sm">From
-                                    End</button>
-                                <button onclick="ll.prepareAnimation('deleteFromPosition')"
-                                    class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition mb-1 text-sm">From
-                                    Position</button>
-                                <button onclick="ll.prepareAnimation('deleteByKey')"
-                                    class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition text-sm">By
-                                    Key</button>
+                             <div class="mt-4">
+                                <input type="number" id="delete-key" placeholder="Key (for by key)" class="w-full p-2 border rounded mb-2">
+                                <input type="number" id="delete-pos" placeholder="Position" class="w-full p-2 border rounded mb-2">
+                                <button onclick="ll.prepareAnimation('deleteFromBeginning')" class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition mb-1 text-sm">From Beginning</button>
+                                <button onclick="ll.prepareAnimation('deleteFromEnd')" class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition mb-1 text-sm">From End</button>
+                                <button onclick="ll.prepareAnimation('deleteFromPosition')" class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition mb-1 text-sm">From Position</button>
+                                <button onclick="ll.prepareAnimation('deleteByKey')" class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition text-sm">By Key</button>
                             </div>
                         </details>
 
                         <!-- Other Operations -->
-                        <details class="bg-slate-50 p-4 rounded-lg border group" open>
+                         <details class="bg-slate-50 p-4 rounded-lg border group" open>
                             <summary class="font-semibold text-green-600 cursor-pointer">Utilities</summary>
-                            <div class="mt-4">
-                                <input type="number" id="search-key" placeholder="Key to search"
-                                    class="w-full p-2 border rounded mb-2">
-                                <button onclick="ll.prepareAnimation('searchElement')"
-                                    class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition mb-1 text-sm">Search
-                                    Element</button>
-                                <button onclick="ll.countNodes()"
-                                    class="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition mb-1 text-sm">Count
-                                    Nodes</button>
-                                <button onclick="ll.isEmpty()"
-                                    class="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition text-sm">Is
-                                    Empty?</button>
+                             <div class="mt-4">
+                                <input type="number" id="search-key" placeholder="Key to search" class="w-full p-2 border rounded mb-2">
+                                <button onclick="ll.prepareAnimation('searchElement')" class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition mb-1 text-sm">Search Element</button>
+                                <button onclick="ll.countNodes()" class="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition mb-1 text-sm">Count Nodes</button>
+                                <button onclick="ll.isEmpty()" class="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition text-sm">Is Empty?</button>
                             </div>
                         </details>
                     </div>
@@ -183,20 +124,20 @@
             <!-- Visualization & Code Section -->
             <div class="lg:col-span-2 space-y-8">
                 <div class="bg-white p-6 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 border-b pb-2">Pseudocode</h2>
-                    <div class="flex items-center justify-center space-x-4 mb-4">
-                        <button id="run-btn"
-                            class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 disabled:bg-gray-300"
-                            disabled>Run</button>
-                        <button id="step-btn"
-                            class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 disabled:bg-gray-300"
-                            disabled>Step</button>
-                        <button id="reset-btn"
-                            class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 disabled:bg-gray-300"
-                            disabled>Reset</button>
+                    <div class="flex justify-between items-center border-b pb-2 mb-4">
+                        <h2 class="text-2xl font-bold">Code</h2>
+                        <div class="flex border border-slate-300 rounded-lg p-1 bg-slate-100">
+                            <button id="code-toggle-pseudocode" class="code-toggle-btn flex-1 px-3 py-1 rounded-md text-sm" onclick="ll.setCodeType('pseudocode')">Pseudocode</button>
+                            <button id="code-toggle-c" class="code-toggle-btn flex-1 px-3 py-1 rounded-md text-sm" onclick="ll.setCodeType('c')">C</button>
+                            <button id="code-toggle-cpp" class="code-toggle-btn flex-1 px-3 py-1 rounded-md text-sm" onclick="ll.setCodeType('cpp')">C++</button>
+                        </div>
                     </div>
-                    <div id="code-display"
-                        class="bg-slate-50 p-4 rounded-lg font-mono text-sm min-h-[200px] overflow-x-auto">
+                     <div class="flex items-center justify-center space-x-4 mb-4">
+                        <button id="run-btn" class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 disabled:bg-gray-300" disabled>Run</button>
+                        <button id="step-btn" class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 disabled:bg-gray-300" disabled>Step</button>
+                        <button id="reset-btn" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 disabled:bg-gray-300" disabled>Reset</button>
+                    </div>
+                    <div id="code-display" class="bg-slate-50 p-4 rounded-lg font-mono text-sm min-h-[200px] overflow-x-auto">
                         <p class="text-slate-400">Select an operation to see the code.</p>
                     </div>
                 </div>
@@ -204,8 +145,7 @@
                     <h2 class="text-2xl font-bold mb-4 border-b pb-2">Visualization</h2>
                     <div id="canvas" class="relative w-full h-[300px] overflow-x-auto overflow-y-hidden p-4"></div>
                 </div>
-                <div id="log-output"
-                    class="bg-slate-800 text-white font-mono text-sm p-4 rounded-xl shadow-lg h-32 overflow-y-auto">
+                 <div id="log-output" class="bg-slate-800 text-white font-mono text-sm p-4 rounded-xl shadow-lg h-32 overflow-y-auto">
                     <p class="text-slate-400">> Welcome! Select a list type and perform an operation.</p>
                 </div>
             </div>
@@ -218,7 +158,7 @@
             constructor(data) {
                 this.data = data;
                 this.next = null;
-                this.prev = null; // For doubly linked list
+                this.prev = null;
                 this.id = `node-${Date.now()}-${Math.random()}`;
             }
         }
@@ -228,6 +168,8 @@
             constructor() {
                 this.head = null;
                 this.listType = 'singly';
+                this.currentCodeType = 'pseudocode';
+                this.currentOperation = null;
                 this.animationSteps = [];
                 this.currentStep = -1;
                 this.animationInterval = null;
@@ -241,6 +183,11 @@
                     doubly: document.getElementById('tab-doubly'),
                     circular: document.getElementById('tab-circular')
                 };
+                this.codeToggles = {
+                    pseudocode: document.getElementById('code-toggle-pseudocode'),
+                    c: document.getElementById('code-toggle-c'),
+                    cpp: document.getElementById('code-toggle-cpp')
+                };
                 this.runBtn = document.getElementById('run-btn');
                 this.stepBtn = document.getElementById('step-btn');
                 this.resetBtn = document.getElementById('reset-btn');
@@ -248,10 +195,12 @@
 
             setListType(type) {
                 if (this.listType === type) return;
+                clearInterval(this.animationInterval);
                 this.listType = type;
-                this.head = null; // Reset list on type change
+                this.head = null;
+                this.currentOperation = null;
                 this._log(`Switched to ${type} linked list. List has been cleared.`);
-
+                
                 Object.values(this.tabs).forEach(tab => tab.classList.remove('active'));
                 this.tabs[type].classList.add('active');
 
@@ -263,25 +212,30 @@
                 this.drawList();
             }
 
+            setCodeType(type) {
+                if (this.currentCodeType === type) return;
+                this.currentCodeType = type;
+                Object.values(this.codeToggles).forEach(toggle => toggle.classList.remove('active'));
+                this.codeToggles[type].classList.add('active');
+                if (this.currentOperation) {
+                    this.displayCode(this.currentOperation);
+                    this.highlightCodeLine(this.animationSteps[this.currentStep]?.line);
+                }
+            }
+
             prepareAnimation(operation) {
                 clearInterval(this.animationInterval);
                 this.animationSteps = [];
                 this.currentStep = -1;
-                this.displayPseudocode(operation);
+                this.currentOperation = operation;
+                this.displayCode(operation);
+                
+                this[operation](true);
 
-                // Create a temporary clone of the list to generate steps without modifying the real one
-                const tempHead = this._cloneList();
-                const originalHead = this.head;
-                this.head = tempHead;
-
-                this[operation](true); // Pass true for generateOnly mode
-
-                this.head = originalHead; // Restore the real list head
-
-                this.runBtn.disabled = this.animationSteps.length === 0;
-                this.stepBtn.disabled = this.animationSteps.length === 0;
-                this.resetBtn.disabled = this.animationSteps.length > 0;
-                this.executeStep(); // Show the initial state
+                this.runBtn.disabled = this.animationSteps.length <= 1;
+                this.stepBtn.disabled = this.animationSteps.length <= 1;
+                this.resetBtn.disabled = this.animationSteps.length <= 1;
+                this.executeStep(false);
             }
 
             runAnimation() {
@@ -289,27 +243,25 @@
                 this.stepBtn.disabled = true;
                 this.animationInterval = setInterval(() => {
                     if (this.currentStep < this.animationSteps.length - 1) {
-                        this.executeStep(true); // true to advance step
+                        this.executeStep(true);
                     } else {
                         clearInterval(this.animationInterval);
-                        this.stepBtn.disabled = true;
                     }
                 }, 800);
             }
-
+            
             executeStep(advance = true) {
                 if (advance && this.currentStep < this.animationSteps.length - 1) {
-                    this.currentStep++;
+                     this.currentStep++;
                 } else if (!advance && this.currentStep === -1) {
-                    this.currentStep = 0;
+                     this.currentStep = 0;
                 }
-
+                
                 const step = this.animationSteps[this.currentStep];
                 if (!step) return;
 
-                // Execute the action for the current step
                 if (step.action) {
-                    step.action();
+                    step.action(step.actionData);
                 }
 
                 this.highlightCodeLine(step.line);
@@ -317,8 +269,8 @@
                 this.drawList(step.options);
 
                 if (this.currentStep >= this.animationSteps.length - 1) {
-                    this.runBtn.disabled = true;
-                    this.stepBtn.disabled = true;
+                     this.runBtn.disabled = true;
+                     this.stepBtn.disabled = true;
                 }
             }
 
@@ -327,89 +279,62 @@
                 this.currentStep = 0;
                 const initialStep = this.animationSteps[0];
                 if (initialStep) {
+                    if(initialStep.action) initialStep.action(initialStep.actionData);
                     this.highlightCodeLine(initialStep.line);
                     this._log(initialStep.message);
                     this.drawList(initialStep.options);
                 }
-                this.runBtn.disabled = this.animationSteps.length === 0;
-                this.stepBtn.disabled = this.animationSteps.length === 0;
+                this.runBtn.disabled = this.animationSteps.length <= 1;
+                this.stepBtn.disabled = this.animationSteps.length <= 1;
             }
 
-            // --- Core Logic (Step Generation) ---
+            // --- Core Logic ---
+            addStep(line, message, options = {}, action = null, actionData = {}) {
+                this.animationSteps.push({ line, message, options, action, actionData });
+            }
 
             insertAtBeginning(generateOnly = false) {
                 if (!generateOnly) return this.prepareAnimation('insertAtBeginning');
                 const data = this._getValue('insert-val');
                 if (data === null) return;
+                const newNodeId = `new-node-${Date.now()}`;
 
-                this.addStep(0, `Create new node with value ${data}.`, {}, null);
-                const newNode = new Node(data);
-
-                this.addStep(1, `Is the list empty?`, {}, null);
+                this.addStep(0, `Create new node with value ${data}.`, {}, this._actions.resetState);
+                this.addStep(1, `Is the list empty?`);
                 if (!this.head) {
-                    this.addStep(2, `Yes. Set head to new node.`, {}, () => {
-                        this.head = newNode;
-                        if (this.listType === 'circular') {
-                            newNode.next = newNode;
-                            if (this.listType === 'doubly') newNode.prev = newNode;
-                        }
-                    });
+                    this.addStep(2, `Yes. Set head to new node.`, { highlightId: newNodeId, type: 'new' }, this._actions.insertAtBeginning, { data, newNodeId });
                 } else {
-                    this.addStep(4, `No. Point new node's next to current head.`, {}, () => {
-                        newNode.next = this.head;
-                        if (this.listType === 'doubly') this.head.prev = newNode;
-                    });
+                    this.addStep(4, `No. Point new node's next to current head.`);
                     if (this.listType === 'circular') {
-                        this.addStep(5, `Find the last node.`, {}, null);
-                        const last = this._getLastNode();
-                        this.addStep(6, `Point last node's next to the new node.`, {}, () => {
-                            last.next = newNode;
-                            if (this.listType === 'doubly') newNode.prev = last;
-                        });
+                        this.addStep(5, `Find the last node.`);
+                        this.addStep(6, `Point last node's next to the new node.`);
                     }
-                    this.addStep(7, `Update head to be the new node.`, {}, () => {
-                        this.head = newNode;
-                    });
+                    this.addStep(7, `Update head to be the new node.`, { highlightId: newNodeId, type: 'new' }, this._actions.insertAtBeginning, { data, newNodeId });
                 }
-                this.addStep(8, `Finished inserting ${data}.`, { highlightId: newNode.id, type: 'new' }, null);
+                this.addStep(8, `Finished inserting ${data}.`);
             }
 
             insertAtEnd(generateOnly = false) {
-                if (!generateOnly) return this.prepareAnimation('insertAtEnd');
-                const data = this._getValue('insert-val');
-                if (data === null) return;
+                 if (!generateOnly) return this.prepareAnimation('insertAtEnd');
+                 const data = this._getValue('insert-val');
+                 if (data === null) return;
+                 const newNodeId = `new-node-${Date.now()}`;
 
-                this.addStep(0, `Create a new node with value ${data}.`, {}, null);
-                const newNode = new Node(data);
-
-                this.addStep(1, `Is the list empty?`, {}, null);
-                if (!this.head) {
-                    this.addStep(2, `Yes, list is empty. Set head to the new node.`, {}, () => {
-                        this.head = newNode;
-                        if (this.listType === 'circular') {
-                            newNode.next = newNode;
-                            if (this.listType === 'doubly') newNode.prev = newNode;
-                        }
-                    });
-                } else {
-                    this.addStep(4, `No, list is not empty. Find the last node.`, {}, null);
+                 this.addStep(0, `Create new node with value ${data}.`, {}, this._actions.resetState);
+                 this.addStep(1, `Is the list empty?`);
+                 if (!this.head) {
+                    this.addStep(2, `Yes. Set head to new node.`, { highlightId: newNodeId, type: 'new' }, this._actions.insertAtEnd, { data, newNodeId });
+                 } else {
+                    this.addStep(4, `No. Find the last node.`);
                     let current = this.head;
                     while (current.next && current.next !== this.head) {
-                        this.addStep(5, `Checking node ${current.data}...`, { highlightId: current.id }, null);
+                        this.addStep(5, `Checking node ${current.data}...`, { highlightId: current.id });
                         current = current.next;
                     }
-                    this.addStep(5, `Found the last node: ${current.data}.`, { highlightId: current.id }, null);
-
-                    this.addStep(6, `Set last node's next pointer to the new node.`, {}, () => {
-                        current.next = newNode;
-                        if (this.listType === 'doubly') newNode.prev = current;
-                        if (this.listType === 'circular') {
-                            newNode.next = this.head;
-                            if (this.listType === 'doubly') this.head.prev = newNode;
-                        }
-                    });
-                }
-                this.addStep(7, `Node ${data} inserted at the end.`, { highlightId: newNode.id, type: 'new' }, null);
+                    this.addStep(5, `Found the last node: ${current.data}.`, { highlightId: current.id });
+                    this.addStep(6, `Set last node's next to the new node.`, { highlightId: newNodeId, type: 'new' }, this._actions.insertAtEnd, { data, newNodeId });
+                 }
+                 this.addStep(7, `Node ${data} inserted at the end.`);
             }
 
             searchElement(generateOnly = false) {
@@ -417,30 +342,150 @@
                 const key = this._getValue('search-key', 'Key');
                 if (key === null) return;
 
-                this.addStep(0, `Start search from the head.`, {}, null);
+                this.addStep(0, `Start search from the head.`, {}, this._actions.resetState);
                 if (!this.head) {
-                    this.addStep(0, `List is empty. Key not found.`, {}, null);
+                    this.addStep(0, `List is empty. Key not found.`);
                     return;
                 }
 
                 let current = this.head;
                 let position = 1;
                 do {
-                    this.addStep(1, `Checking node at position ${position} (value: ${current.data}).`, { highlightId: current.id }, null);
-                    this.addStep(2, `Is ${current.data} equal to ${key}?`, { highlightId: current.id }, null);
+                    this.addStep(1, `Checking node at position ${position} (value: ${current.data}).`, { highlightId: current.id });
+                    this.addStep(2, `Is ${current.data} equal to ${key}?`, { highlightId: current.id });
                     if (current.data === key) {
-                        this.addStep(3, `Yes. Element ${key} found at position ${position}.`, { highlightId: current.id }, null);
+                        this.addStep(3, `Yes. Element ${key} found at position ${position}.`, { highlightId: current.id });
                         return;
                     }
-                    this.addStep(4, `No. Move to the next node.`, {}, null);
+                    this.addStep(4, `No. Move to the next node.`);
                     current = current.next;
                     position++;
                 } while (current && current !== this.head);
 
-                this.addStep(6, `End of list reached. Element ${key} not found.`, {}, null);
+                this.addStep(6, `End of list reached. Element ${key} not found.`);
+            }
+            
+            deleteFromBeginning(generateOnly = false) {
+                if (!generateOnly) return this.prepareAnimation('deleteFromBeginning');
+                this.addStep(0, `Check if list is empty.`, {}, this._actions.resetState);
+                if (!this.head) {
+                    this.addStep(1, `List is empty. Cannot delete.`);
+                    return;
+                }
+                const tempId = this.head.id;
+                this.addStep(3, `Store head node in temp.`, { highlightId: tempId });
+                this.addStep(4, `Move head to the next node.`);
+                this.addStep(5, `Free the original head node.`, { highlightId: tempId, type: 'delete' }, this._actions.deleteFromBeginning);
+                this.addStep(6, `Return the new head.`);
             }
 
-            // Other utility functions (non-animated)
+            deleteFromEnd(generateOnly = false) {
+                if (!generateOnly) return this.prepareAnimation('deleteFromEnd');
+                this.addStep(0, `Check if list is empty.`, {}, this._actions.resetState);
+                if (!this.head) {
+                    this.addStep(1, `List is empty. Cannot delete.`);
+                    return;
+                }
+                this.addStep(3, `Check if there is only one node.`);
+                if (!this.head.next || this.head.next === this.head) {
+                    const tempId = this.head.id;
+                    this.addStep(4, `Yes. Free the head node.`, { highlightId: tempId, type: 'delete' }, this._actions.deleteFromEnd);
+                    this.addStep(5, `Return NULL.`);
+                    return;
+                }
+                this.addStep(7, `Traverse to the second to last node.`);
+                let current = this.head;
+                while (current.next && current.next.next && current.next.next !== this.head) {
+                    this.addStep(8, `Checking node ${current.data}...`, { highlightId: current.id });
+                    current = current.next;
+                }
+                this.addStep(8, `Found second to last node: ${current.data}.`, { highlightId: current.id });
+                const tempId = current.next.id;
+                this.addStep(9, `Free the last node.`, { highlightId: tempId, type: 'delete' }, this._actions.deleteFromEnd);
+                this.addStep(10, `Set current node's next to NULL.`);
+                this.addStep(11, `Return head.`);
+            }
+            
+            // --- Action Implementations ---
+            _actions = {
+                resetState: () => {
+                    // This action is a placeholder to ensure the list is in its initial state for the animation run
+                },
+                insertAtBeginning: (data) => {
+                    const newNode = new Node(data.data);
+                    newNode.id = data.newNodeId;
+                    if (!this.head) {
+                        this.head = newNode;
+                        if (this.listType === 'circular') {
+                            newNode.next = newNode;
+                            if (this.listType === 'doubly') newNode.prev = newNode;
+                        }
+                    } else {
+                        newNode.next = this.head;
+                        if (this.listType === 'doubly') this.head.prev = newNode;
+                        if (this.listType === 'circular') {
+                            const last = this._getLastNode();
+                            last.next = newNode;
+                            if (this.listType === 'doubly') newNode.prev = last;
+                        }
+                        this.head = newNode;
+                    }
+                },
+                insertAtEnd: (data) => {
+                    const newNode = new Node(data.data);
+                    newNode.id = data.newNodeId;
+                    if (!this.head) {
+                        this.head = newNode;
+                        if (this.listType === 'circular') {
+                            newNode.next = newNode;
+                            if (this.listType === 'doubly') newNode.prev = newNode;
+                        }
+                    } else {
+                        const lastNode = this._getLastNode();
+                        lastNode.next = newNode;
+                        if (this.listType === 'doubly') newNode.prev = lastNode;
+                        if (this.listType === 'circular') {
+                            newNode.next = this.head;
+                            if (this.listType === 'doubly') this.head.prev = newNode;
+                        }
+                    }
+                },
+                deleteFromBeginning: () => {
+                    if (!this.head) return;
+                    if (this.head.next === this.head) {
+                        this.head = null;
+                    } else {
+                        if (this.listType === 'circular') {
+                            const last = this._getLastNode();
+                            last.next = this.head.next;
+                        }
+                        this.head = this.head.next;
+                        if (this.listType === 'doubly') {
+                            this.head.prev = null;
+                            if (this.listType === 'circular') {
+                                const last = this._getLastNode();
+                                this.head.prev = last;
+                            }
+                        }
+                    }
+                },
+                deleteFromEnd: () => {
+                    if (!this.head) return;
+                    if (!this.head.next || this.head.next === this.head) {
+                        this.head = null;
+                        return;
+                    }
+                    let current = this.head;
+                    while (current.next.next && current.next.next !== this.head) {
+                        current = current.next;
+                    }
+                    current.next = (this.listType === 'circular') ? this.head : null;
+                    if (this.listType === 'doubly' && this.listType === 'circular') {
+                        this.head.prev = current;
+                    }
+                }
+            }
+            
             countNodes() {
                 if (!this.head) return this._log("Total nodes: 0");
                 let count = 0;
@@ -455,41 +500,37 @@
             isEmpty() {
                 this._log(this.head ? "List is not empty." : "List is empty.");
             }
-
-            // --- Helper for step generation ---
-            addStep(line, message, options, action) {
-                this.animationSteps.push({ line, message, options, action });
-            }
-
-            // --- Pseudocode Display ---
-            displayPseudocode(operation) {
-                const code = this.pseudocode[operation];
-                if (!code) {
-                    this.codeDisplay.innerHTML = `<p class="text-slate-400">No pseudocode available for this operation.</p>`;
+            
+            // --- Code Display ---
+            displayCode(operation) {
+                const codeBlock = this.codeSnippets[operation]?.[this.currentCodeType];
+                if (!codeBlock) {
+                    this.codeDisplay.innerHTML = `<p class="text-slate-400">No code available for this operation.</p>`;
                     return;
                 }
-                this.codeDisplay.innerHTML = code.map((line, index) =>
+                this.codeDisplay.innerHTML = codeBlock.map((line, index) => 
                     `<div class="line p-1 border-l-4 border-transparent" data-line="${index}">${line.replace(/ /g, '&nbsp;')}</div>`
                 ).join('');
+                this.highlightCodeLine(this.animationSteps[this.currentStep]?.line);
             }
 
             highlightCodeLine(lineNumber) {
                 this.codeDisplay.querySelectorAll('.line').forEach(line => {
                     line.classList.remove('highlight');
                 });
-                const lineEl = this.codeDisplay.querySelector(`.line[data-line="${lineNumber}"]`);
-                if (lineEl) {
-                    lineEl.classList.add('highlight');
+                if (lineNumber !== undefined) {
+                    const lineEl = this.codeDisplay.querySelector(`.line[data-line="${lineNumber}"]`);
+                    if (lineEl) lineEl.classList.add('highlight');
                 }
             }
 
-            // --- Visualization (largely unchanged) ---
+            // --- Visualization ---
             drawList(options = {}) {
                 this.canvas.innerHTML = '';
                 if (!this.head) return;
                 const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
                 this.canvas.appendChild(svg);
-
+                
                 let nodes = [];
                 let current = this.head;
                 do {
@@ -519,18 +560,17 @@
                     nodeElements.push({ el: nodeEl, x, y, node });
                 });
 
-                // Draw arrows
                 nodeElements.forEach((item, j) => {
                     if (item.node.next) {
                         const nextIndex = (j + 1) % nodeElements.length;
-                        const nextItem = (this.listType === 'circular' || j < nodeElements.length - 1) ? nodeElements[nextIndex] : null;
-
+                        const nextItem = (this.listType === 'circular' || j < nodeElements.length - 1) ? nodeElements.find(el => el.node.id === item.node.next.id) : null;
+                        
                         if (nextItem) {
-                            this._drawArrow(svg, item, nextItem, 'next');
-                            if (this.listType === 'doubly') {
+                             this._drawArrow(svg, item, nextItem, 'next');
+                             if (this.listType === 'doubly') {
                                 this._drawArrow(svg, nextItem, item, 'prev');
-                            }
-                        } else { // NULL pointer for Singly/Doubly
+                             }
+                        } else {
                             this._drawNullArrow(svg, item);
                         }
                     }
@@ -554,21 +594,21 @@
                 const fromPt = { x: fromItem.x, y: fromItem.y };
                 const toPt = { x: toItem.x, y: toItem.y };
                 const angle = Math.atan2(toPt.y - fromPt.y, toPt.x - fromPt.x);
-
+                
                 const start = { x: fromPt.x + 30 * Math.cos(angle), y: fromPt.y + 30 * Math.sin(angle) };
                 const end = { x: toPt.x - 30 * Math.cos(angle), y: toPt.y - 30 * Math.sin(angle) };
-
+                
                 let pathData;
                 if (type === 'next') {
                     pathData = `M ${start.x} ${start.y} L ${end.x} ${end.y}`;
-                } else { // 'prev' arrow for doubly
+                } else {
                     const midX = (start.x + end.x) / 2;
                     const midY = (start.y + end.y) / 2;
                     const dx = end.x - start.x;
                     const dy = end.y - start.y;
-                    const norm = Math.sqrt(dx * dx + dy * dy);
-                    const controlX = midX - 0.2 * norm * (dy / norm);
-                    const controlY = midY + 0.2 * norm * (dx / norm);
+                    const norm = Math.sqrt(dx*dx + dy*dy);
+                    const controlX = midX - 0.2 * norm * (dy/norm);
+                    const controlY = midY + 0.2 * norm * (dx/norm);
                     pathData = `M ${start.x} ${start.y} Q ${controlX} ${controlY} ${end.x} ${end.y}`;
                 }
 
@@ -582,8 +622,38 @@
                 this._ensureMarker(svg, type);
             }
 
-            _drawNullArrow(svg, item) { /* ... same as before ... */ }
-            _ensureMarker(svg, type) { /* ... same as before ... */ }
+            _drawNullArrow(svg, item) {
+                const startX = item.x + 30;
+                const startY = item.y;
+                const endX = startX + 50;
+                this._ensureMarker(svg, 'next');
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', startX);
+                line.setAttribute('y1', startY);
+                line.setAttribute('x2', endX - 10);
+                line.setAttribute('y2', startY);
+                line.setAttribute('stroke', '#64748b');
+                line.setAttribute('stroke-width', 2);
+                line.setAttribute('marker-end', 'url(#arrowhead-next)');
+                svg.appendChild(line);
+                
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', endX);
+                text.setAttribute('y', startY + 5);
+                text.textContent = 'NULL';
+                svg.appendChild(text);
+            }
+
+            _ensureMarker(svg, type) {
+                if (svg.querySelector(`#arrowhead-${type}`)) return;
+                const defs = svg.querySelector('defs') || document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+                const color = type === 'next' ? '#64748b' : '#f87171';
+                defs.innerHTML += `
+                    <marker id="arrowhead-${type}" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="${color}" />
+                    </marker>`;
+                if (!svg.querySelector('defs')) svg.appendChild(defs);
+            }
 
             // --- Helpers ---
             _getValue(id, name = 'Value') {
@@ -615,78 +685,210 @@
                 }
                 return current;
             }
-            _cloneList() {
-                if (!this.head) return null;
-                let newHead = null, newCurrent = null;
-                let current = this.head;
-                const map = new Map();
-                do {
-                    const newNode = new Node(current.data);
-                    map.set(current, newNode);
-                    if (!newHead) {
-                        newHead = newNode;
-                        newCurrent = newNode;
-                    } else {
-                        newCurrent.next = newNode;
-                        if (this.listType === 'doubly') newNode.prev = newCurrent;
-                        newCurrent = newNode;
-                    }
-                    current = current.next;
-                } while (current && current !== this.head);
-
-                if (this.listType === 'circular') {
-                    const originalLast = this._getLastNode();
-                    const newLast = map.get(originalLast);
-                    newLast.next = newHead;
-                    if (this.listType === 'doubly') newHead.prev = newLast;
-                }
-                return newHead;
-            }
         }
 
-        // --- Pseudocode Data ---
-        LinkedListVisualizer.prototype.pseudocode = {
-            insertAtBeginning: [
-                "1. CREATE newNode with data",
-                "2. IF head is NULL THEN",
-                "3.   head = newNode",
-                "4. ELSE",
-                "5.   newNode.next = head",
-                "6.   IF circular THEN lastNode.next = newNode",
-                "7.   head = newNode",
-                "8. END IF"
-            ],
-            insertAtEnd: [
-                "1. CREATE newNode with data",
-                "2. IF head is NULL THEN",
-                "3.   head = newNode",
-                "4. ELSE",
-                "5.   current = FindLastNode()",
-                "6.   current.next = newNode",
-                "7. END IF"
-            ],
-            searchElement: [
-                "1. current = head",
-                "2. WHILE current is not NULL",
-                "3.   IF current.data == key THEN RETURN position",
-                "4.   current = current.next",
-                "5. END WHILE",
-                "6. RETURN not found"
-            ]
+        // --- Code Snippets Data ---
+        LinkedListVisualizer.prototype.codeSnippets = {
+            insertAtBeginning: {
+                pseudocode: [
+                    "1. CREATE newNode with data",
+                    "2. IF head is NULL THEN",
+                    "3.   head = newNode",
+                    "4. ELSE",
+                    "5.   newNode.next = head",
+                    "6.   IF circular THEN lastNode.next = newNode",
+                    "7.   head = newNode",
+                    "8. END IF"
+                ],
+                c: [
+                    "struct Node* insertAtBeginning(struct Node* head, int data) {",
+                    "  struct Node* newNode = createNode(data);",
+                    "  if (head == NULL) {",
+                    "    return newNode;",
+                    "  }",
+                    "  newNode->next = head;",
+                    "  return newNode;",
+                    "}"
+                ],
+                cpp: [
+                    "void LinkedList::insertAtBeginning(int data) {",
+                    "  Node* newNode = new Node(data);",
+                    "  newNode->next = head;",
+                    "  head = newNode;",
+                    "}"
+                ]
+            },
+            insertAtEnd: {
+                pseudocode: [
+                    "1. CREATE newNode with data",
+                    "2. IF head is NULL THEN",
+                    "3.   head = newNode",
+                    "4. ELSE",
+                    "5.   current = FindLastNode()",
+                    "6.   current.next = newNode",
+                    "7. END IF"
+                ],
+                c: [
+                    "struct Node* insertAtEnd(struct Node* head, int data) {",
+                    "  struct Node* newNode = createNode(data);",
+                    "  if (head == NULL) {",
+                    "    return newNode;",
+                    "  }",
+                    "  struct Node* current = head;",
+                    "  while (current->next != NULL) {",
+                    "    current = current->next;",
+                    "  }",
+                    "  current->next = newNode;",
+                    "  return head;",
+                    "}"
+                ],
+                cpp: [
+                    "void LinkedList::insertAtEnd(int data) {",
+                    "  Node* newNode = new Node(data);",
+                    "  if (head == nullptr) {",
+                    "    head = newNode;",
+                    "    return;",
+                    "  }",
+                    "  Node* current = head;",
+                    "  while (current->next != nullptr) {",
+                    "    current = current->next;",
+                    "  }",
+                    "  current->next = newNode;",
+                    "}"
+                ]
+            },
+            deleteFromBeginning: {
+                pseudocode: [
+                    "1. IF head is NULL THEN",
+                    "2.   RETURN",
+                    "3. END IF",
+                    "4. temp = head",
+                    "5. head = head.next",
+                    "6. FREE temp",
+                    "7. RETURN head"
+                ],
+                c: [
+                    "struct Node* deleteFromBeginning(struct Node* head) {",
+                    "  if (head == NULL) {",
+                    "    return NULL;",
+                    "  }",
+                    "  struct Node* temp = head;",
+                    "  head = head->next;",
+                    "  free(temp);",
+                    "  return head;",
+                    "}"
+                ],
+                cpp: [
+                    "void LinkedList::deleteFromBeginning() {",
+                    "  if (head == nullptr) {",
+                    "    return;",
+                    "  }",
+                    "  Node* temp = head;",
+                    "  head = head->next;",
+                    "  delete temp;",
+                    "}"
+                ]
+            },
+            deleteFromEnd: {
+                pseudocode: [
+                    "1. IF head is NULL THEN RETURN",
+                    "2. IF head.next is NULL THEN",
+                    "3.   FREE head",
+                    "4.   RETURN NULL",
+                    "5. END IF",
+                    "6. current = head",
+                    "7. WHILE current.next.next is not NULL",
+                    "8.   current = current.next",
+                    "9. FREE current.next",
+                    "10. current.next = NULL",
+                    "11. RETURN head"
+                ],
+                c: [
+                    "struct Node* deleteFromEnd(struct Node* head) {",
+                    "  if (head == NULL) return NULL;",
+                    "  if (head->next == NULL) {",
+                    "    free(head);",
+                    "    return NULL;",
+                    "  }",
+                    "  struct Node* current = head;",
+                    "  while (current->next->next != NULL) {",
+                    "    current = current->next;",
+                    "  }",
+                    "  free(current->next);",
+                    "  current->next = NULL;",
+                    "  return head;",
+                    "}"
+                ],
+                cpp: [
+                    "void LinkedList::deleteFromEnd() {",
+                    "  if (head == nullptr) return;",
+                    "  if (head->next == nullptr) {",
+                    "    delete head;",
+                    "    head = nullptr;",
+                    "    return;",
+                    "  }",
+                    "  Node* current = head;",
+                    "  while (current->next->next != nullptr) {",
+                    "    current = current->next;",
+                    "  }",
+                    "  delete current->next;",
+                    "  current->next = nullptr;",
+                    "}"
+                ]
+            },
+            searchElement: {
+                pseudocode: [
+                    "1. current = head, position = 1",
+                    "2. WHILE current is not NULL",
+                    "3.   IF current.data == key THEN RETURN position",
+                    "4.   current = current.next",
+                    "5.   position++",
+                    "6. END WHILE",
+                    "7. RETURN not found"
+                ],
+                c: [
+                    "int searchElement(struct Node* head, int key) {",
+                    "  struct Node* current = head;",
+                    "  int position = 1;",
+                    "  while (current != NULL) {",
+                    "    if (current->data == key) {",
+                    "      return position;",
+                    "    }",
+                    "    current = current->next;",
+                    "    position++;",
+                    "  }",
+                    "  return -1;",
+                    "}"
+                ],
+                cpp: [
+                    "int LinkedList::searchElement(int key) {",
+                    "  Node* current = head;",
+                    "  int position = 1;",
+                    "  while (current != nullptr) {",
+                    "    if (current->data == key) {",
+                    "      return position;",
+                    "    }",
+                    "    current = current->next;",
+                    "    position++;",
+                    "  }",
+                    "  return -1;",
+                    "}"
+                ]
+            }
         };
 
         // --- Initialization ---
         document.addEventListener('DOMContentLoaded', () => {
             const ll = new LinkedListVisualizer();
-            window.ll = ll; // Make it globally accessible for onclick handlers
+            window.ll = ll;
 
             ll.runBtn.onclick = () => ll.runAnimation();
             ll.stepBtn.onclick = () => ll.executeStep(true);
             ll.resetBtn.onclick = () => ll.resetAnimation();
 
             ll.setListType('singly');
+            ll.setCodeType('pseudocode');
         });
     </script>
 </body>
-
 </html>
