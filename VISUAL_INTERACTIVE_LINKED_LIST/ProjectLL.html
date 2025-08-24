@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Linked List Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for a polished look */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .node {
+            width: 60px;
+            height: 60px;
+            transition: all 0.5s ease-in-out;
+            z-index: 10;
+        }
+
+        .node-data {
+            border-right: 2px solid #60a5fa;
+            /* A subtle blue */
+        }
+
+        .node-highlight {
+            background-color: #fbbf24 !important;
+            /* Amber-400 */
+            transform: scale(1.1);
+        }
+
+        .node-new {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .node-delete {
+            animation: fadeOut 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+
+        #canvas svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            overflow: visible;
+        }
+
+        .tab-btn.active {
+            background-color: #3b82f6;
+            /* blue-500 */
+            color: white;
+            font-weight: 600;
+        }
+
+        #code-display .line.highlight {
+            background-color: #fef9c3;
+            /* yellow-100 */
+            border-left-color: #facc15;
+            /* yellow-400 */
+        }
+    </style>
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+</head>
+
+<body class="bg-slate-100 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-slate-900">Interactive Linked List Visualizer</h1>
+            <p class="text-slate-600 mt-2">Visualize operations for Singly, Doubly, and Circular Linked Lists.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Controls Section -->
+            <div class="lg:col-span-1">
+                <div class="bg-white p-6 rounded-xl shadow-lg sticky top-8">
+                    <div class="mb-4">
+                        <div class="flex border border-slate-300 rounded-lg p-1 bg-slate-100">
+                            <button id="tab-singly" class="tab-btn flex-1 p-2 rounded-md text-sm transition"
+                                onclick="ll.setListType('singly')">Singly</button>
+                            <button id="tab-doubly" class="tab-btn flex-1 p-2 rounded-md text-sm transition"
+                                onclick="ll.setListType('doubly')">Doubly</button>
+                            <button id="tab-circular" class="tab-btn flex-1 p-2 rounded-md text-sm transition"
+                                onclick="ll.setListType('circular')">Circular</button>
+                        </div>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-4 border-b pb-2">Operations</h2>
+                    <div class="space-y-4">
+                        <!-- Insert Operations -->
+                        <details class="bg-slate-50 p-4 rounded-lg border group">
+                            <summary class="font-semibold text-blue-600 cursor-pointer">Insert</summary>
+                            <div class="mt-4">
+                                <input type="number" id="insert-val" placeholder="Value"
+                                    class="w-full p-2 border rounded mb-2">
+                                <input type="number" id="insert-pos" placeholder="Position (optional)"
+                                    class="w-full p-2 border rounded mb-2">
+                                <button onclick="ll.prepareAnimation('insertAtBeginning')"
+                                    class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition mb-1 text-sm">At
+                                    Beginning</button>
+                                <button onclick="ll.prepareAnimation('insertAtEnd')"
+                                    class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition mb-1 text-sm">At
+                                    End</button>
+                                <button onclick="ll.prepareAnimation('insertAtPosition')"
+                                    class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition text-sm">At
+                                    Position</button>
+                            </div>
+                        </details>
+
+                        <!-- Delete Operations -->
+                        <details class="bg-slate-50 p-4 rounded-lg border group">
+                            <summary class="font-semibold text-red-600 cursor-pointer">Delete</summary>
+                            <div class="mt-4">
+                                <input type="number" id="delete-key" placeholder="Key (for by key)"
+                                    class="w-full p-2 border rounded mb-2">
+                                <input type="number" id="delete-pos" placeholder="Position"
+                                    class="w-full p-2 border rounded mb-2">
+                                <button onclick="ll.prepareAnimation('deleteFromBeginning')"
+                                    class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition mb-1 text-sm">From
+                                    Beginning</button>
+                                <button onclick="ll.prepareAnimation('deleteFromEnd')"
+                                    class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition mb-1 text-sm">From
+                                    End</button>
+                                <button onclick="ll.prepareAnimation('deleteFromPosition')"
+                                    class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition mb-1 text-sm">From
+                                    Position</button>
+                                <button onclick="ll.prepareAnimation('deleteByKey')"
+                                    class="w-full bg-red-500 text-white p-2 rounded hover:bg-red-600 transition text-sm">By
+                                    Key</button>
+                            </div>
+                        </details>
+
+                        <!-- Other Operations -->
+                        <details class="bg-slate-50 p-4 rounded-lg border group" open>
+                            <summary class="font-semibold text-green-600 cursor-pointer">Utilities</summary>
+                            <div class="mt-4">
+                                <input type="number" id="search-key" placeholder="Key to search"
+                                    class="w-full p-2 border rounded mb-2">
+                                <button onclick="ll.prepareAnimation('searchElement')"
+                                    class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition mb-1 text-sm">Search
+                                    Element</button>
+                                <button onclick="ll.countNodes()"
+                                    class="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition mb-1 text-sm">Count
+                                    Nodes</button>
+                                <button onclick="ll.isEmpty()"
+                                    class="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition text-sm">Is
+                                    Empty?</button>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization & Code Section -->
+            <div class="lg:col-span-2 space-y-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 border-b pb-2">Pseudocode</h2>
+                    <div class="flex items-center justify-center space-x-4 mb-4">
+                        <button id="run-btn"
+                            class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 disabled:bg-gray-300"
+                            disabled>Run</button>
+                        <button id="step-btn"
+                            class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 disabled:bg-gray-300"
+                            disabled>Step</button>
+                        <button id="reset-btn"
+                            class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 disabled:bg-gray-300"
+                            disabled>Reset</button>
+                    </div>
+                    <div id="code-display"
+                        class="bg-slate-50 p-4 rounded-lg font-mono text-sm min-h-[200px] overflow-x-auto">
+                        <p class="text-slate-400">Select an operation to see the code.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold mb-4 border-b pb-2">Visualization</h2>
+                    <div id="canvas" class="relative w-full h-[300px] overflow-x-auto overflow-y-hidden p-4"></div>
+                </div>
+                <div id="log-output"
+                    class="bg-slate-800 text-white font-mono text-sm p-4 rounded-xl shadow-lg h-32 overflow-y-auto">
+                    <p class="text-slate-400">> Welcome! Select a list type and perform an operation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Node Class (Declared once) ---
+        class Node {
+            constructor(data) {
+                this.data = data;
+                this.next = null;
+                this.prev = null; // For doubly linked list
+                this.id = `node-${Date.now()}-${Math.random()}`;
+            }
+        }
+
+        // --- LinkedListVisualizer Class ---
+        class LinkedListVisualizer {
+            constructor() {
+                this.head = null;
+                this.listType = 'singly';
+                this.animationSteps = [];
+                this.currentStep = -1;
+                this.animationInterval = null;
+
+                // DOM Elements
+                this.canvas = document.getElementById('canvas');
+                this.logOutput = document.getElementById('log-output');
+                this.codeDisplay = document.getElementById('code-display');
+                this.tabs = {
+                    singly: document.getElementById('tab-singly'),
+                    doubly: document.getElementById('tab-doubly'),
+                    circular: document.getElementById('tab-circular')
+                };
+                this.runBtn = document.getElementById('run-btn');
+                this.stepBtn = document.getElementById('step-btn');
+                this.resetBtn = document.getElementById('reset-btn');
+            }
+
+            setListType(type) {
+                if (this.listType === type) return;
+                this.listType = type;
+                this.head = null; // Reset list on type change
+                this._log(`Switched to ${type} linked list. List has been cleared.`);
+
+                Object.values(this.tabs).forEach(tab => tab.classList.remove('active'));
+                this.tabs[type].classList.add('active');
+
+                this.codeDisplay.innerHTML = `<p class="text-slate-400">Select an operation to see the code.</p>`;
+                this.runBtn.disabled = true;
+                this.stepBtn.disabled = true;
+                this.resetBtn.disabled = true;
+
+                this.drawList();
+            }
+
+            prepareAnimation(operation) {
+                clearInterval(this.animationInterval);
+                this.animationSteps = [];
+                this.currentStep = -1;
+                this.displayPseudocode(operation);
+
+                // Create a temporary clone of the list to generate steps without modifying the real one
+                const tempHead = this._cloneList();
+                const originalHead = this.head;
+                this.head = tempHead;
+
+                this[operation](true); // Pass true for generateOnly mode
+
+                this.head = originalHead; // Restore the real list head
+
+                this.runBtn.disabled = this.animationSteps.length === 0;
+                this.stepBtn.disabled = this.animationSteps.length === 0;
+                this.resetBtn.disabled = this.animationSteps.length > 0;
+                this.executeStep(); // Show the initial state
+            }
+
+            runAnimation() {
+                this.runBtn.disabled = true;
+                this.stepBtn.disabled = true;
+                this.animationInterval = setInterval(() => {
+                    if (this.currentStep < this.animationSteps.length - 1) {
+                        this.executeStep(true); // true to advance step
+                    } else {
+                        clearInterval(this.animationInterval);
+                        this.stepBtn.disabled = true;
+                    }
+                }, 800);
+            }
+
+            executeStep(advance = true) {
+                if (advance && this.currentStep < this.animationSteps.length - 1) {
+                    this.currentStep++;
+                } else if (!advance && this.currentStep === -1) {
+                    this.currentStep = 0;
+                }
+
+                const step = this.animationSteps[this.currentStep];
+                if (!step) return;
+
+                // Execute the action for the current step
+                if (step.action) {
+                    step.action();
+                }
+
+                this.highlightCodeLine(step.line);
+                this._log(step.message);
+                this.drawList(step.options);
+
+                if (this.currentStep >= this.animationSteps.length - 1) {
+                    this.runBtn.disabled = true;
+                    this.stepBtn.disabled = true;
+                }
+            }
+
+            resetAnimation() {
+                clearInterval(this.animationInterval);
+                this.currentStep = 0;
+                const initialStep = this.animationSteps[0];
+                if (initialStep) {
+                    this.highlightCodeLine(initialStep.line);
+                    this._log(initialStep.message);
+                    this.drawList(initialStep.options);
+                }
+                this.runBtn.disabled = this.animationSteps.length === 0;
+                this.stepBtn.disabled = this.animationSteps.length === 0;
+            }
+
+            // --- Core Logic (Step Generation) ---
+
+            insertAtBeginning(generateOnly = false) {
+                if (!generateOnly) return this.prepareAnimation('insertAtBeginning');
+                const data = this._getValue('insert-val');
+                if (data === null) return;
+
+                this.addStep(0, `Create new node with value ${data}.`, {}, null);
+                const newNode = new Node(data);
+
+                this.addStep(1, `Is the list empty?`, {}, null);
+                if (!this.head) {
+                    this.addStep(2, `Yes. Set head to new node.`, {}, () => {
+                        this.head = newNode;
+                        if (this.listType === 'circular') {
+                            newNode.next = newNode;
+                            if (this.listType === 'doubly') newNode.prev = newNode;
+                        }
+                    });
+                } else {
+                    this.addStep(4, `No. Point new node's next to current head.`, {}, () => {
+                        newNode.next = this.head;
+                        if (this.listType === 'doubly') this.head.prev = newNode;
+                    });
+                    if (this.listType === 'circular') {
+                        this.addStep(5, `Find the last node.`, {}, null);
+                        const last = this._getLastNode();
+                        this.addStep(6, `Point last node's next to the new node.`, {}, () => {
+                            last.next = newNode;
+                            if (this.listType === 'doubly') newNode.prev = last;
+                        });
+                    }
+                    this.addStep(7, `Update head to be the new node.`, {}, () => {
+                        this.head = newNode;
+                    });
+                }
+                this.addStep(8, `Finished inserting ${data}.`, { highlightId: newNode.id, type: 'new' }, null);
+            }
+
+            insertAtEnd(generateOnly = false) {
+                if (!generateOnly) return this.prepareAnimation('insertAtEnd');
+                const data = this._getValue('insert-val');
+                if (data === null) return;
+
+                this.addStep(0, `Create a new node with value ${data}.`, {}, null);
+                const newNode = new Node(data);
+
+                this.addStep(1, `Is the list empty?`, {}, null);
+                if (!this.head) {
+                    this.addStep(2, `Yes, list is empty. Set head to the new node.`, {}, () => {
+                        this.head = newNode;
+                        if (this.listType === 'circular') {
+                            newNode.next = newNode;
+                            if (this.listType === 'doubly') newNode.prev = newNode;
+                        }
+                    });
+                } else {
+                    this.addStep(4, `No, list is not empty. Find the last node.`, {}, null);
+                    let current = this.head;
+                    while (current.next && current.next !== this.head) {
+                        this.addStep(5, `Checking node ${current.data}...`, { highlightId: current.id }, null);
+                        current = current.next;
+                    }
+                    this.addStep(5, `Found the last node: ${current.data}.`, { highlightId: current.id }, null);
+
+                    this.addStep(6, `Set last node's next pointer to the new node.`, {}, () => {
+                        current.next = newNode;
+                        if (this.listType === 'doubly') newNode.prev = current;
+                        if (this.listType === 'circular') {
+                            newNode.next = this.head;
+                            if (this.listType === 'doubly') this.head.prev = newNode;
+                        }
+                    });
+                }
+                this.addStep(7, `Node ${data} inserted at the end.`, { highlightId: newNode.id, type: 'new' }, null);
+            }
+
+            searchElement(generateOnly = false) {
+                if (!generateOnly) return this.prepareAnimation('searchElement');
+                const key = this._getValue('search-key', 'Key');
+                if (key === null) return;
+
+                this.addStep(0, `Start search from the head.`, {}, null);
+                if (!this.head) {
+                    this.addStep(0, `List is empty. Key not found.`, {}, null);
+                    return;
+                }
+
+                let current = this.head;
+                let position = 1;
+                do {
+                    this.addStep(1, `Checking node at position ${position} (value: ${current.data}).`, { highlightId: current.id }, null);
+                    this.addStep(2, `Is ${current.data} equal to ${key}?`, { highlightId: current.id }, null);
+                    if (current.data === key) {
+                        this.addStep(3, `Yes. Element ${key} found at position ${position}.`, { highlightId: current.id }, null);
+                        return;
+                    }
+                    this.addStep(4, `No. Move to the next node.`, {}, null);
+                    current = current.next;
+                    position++;
+                } while (current && current !== this.head);
+
+                this.addStep(6, `End of list reached. Element ${key} not found.`, {}, null);
+            }
+
+            // Other utility functions (non-animated)
+            countNodes() {
+                if (!this.head) return this._log("Total nodes: 0");
+                let count = 0;
+                let current = this.head;
+                do {
+                    count++;
+                    current = current.next;
+                } while (current && current !== this.head);
+                this._log(`Total number of nodes: ${count}`);
+            }
+
+            isEmpty() {
+                this._log(this.head ? "List is not empty." : "List is empty.");
+            }
+
+            // --- Helper for step generation ---
+            addStep(line, message, options, action) {
+                this.animationSteps.push({ line, message, options, action });
+            }
+
+            // --- Pseudocode Display ---
+            displayPseudocode(operation) {
+                const code = this.pseudocode[operation];
+                if (!code) {
+                    this.codeDisplay.innerHTML = `<p class="text-slate-400">No pseudocode available for this operation.</p>`;
+                    return;
+                }
+                this.codeDisplay.innerHTML = code.map((line, index) =>
+                    `<div class="line p-1 border-l-4 border-transparent" data-line="${index}">${line.replace(/ /g, '&nbsp;')}</div>`
+                ).join('');
+            }
+
+            highlightCodeLine(lineNumber) {
+                this.codeDisplay.querySelectorAll('.line').forEach(line => {
+                    line.classList.remove('highlight');
+                });
+                const lineEl = this.codeDisplay.querySelector(`.line[data-line="${lineNumber}"]`);
+                if (lineEl) {
+                    lineEl.classList.add('highlight');
+                }
+            }
+
+            // --- Visualization (largely unchanged) ---
+            drawList(options = {}) {
+                this.canvas.innerHTML = '';
+                if (!this.head) return;
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                this.canvas.appendChild(svg);
+
+                let nodes = [];
+                let current = this.head;
+                do {
+                    nodes.push(current);
+                    current = current.next;
+                } while (current && current !== this.head);
+
+                const nodeElements = [];
+                const canvasWidth = this.canvas.clientWidth;
+                const canvasHeight = this.canvas.clientHeight;
+
+                nodes.forEach((node, i) => {
+                    const nodeEl = this._createNodeElement(node, options);
+                    let x, y;
+                    if (this.listType === 'circular') {
+                        const radius = Math.min(canvasWidth, canvasHeight) / 2 - 60;
+                        const angle = (i / nodes.length) * 2 * Math.PI - Math.PI / 2;
+                        x = canvasWidth / 2 + radius * Math.cos(angle);
+                        y = canvasHeight / 2 + radius * Math.sin(angle);
+                    } else {
+                        x = i * 110 + 50;
+                        y = 150;
+                    }
+                    nodeEl.style.left = `${x - 30}px`;
+                    nodeEl.style.top = `${y - 30}px`;
+                    this.canvas.appendChild(nodeEl);
+                    nodeElements.push({ el: nodeEl, x, y, node });
+                });
+
+                // Draw arrows
+                nodeElements.forEach((item, j) => {
+                    if (item.node.next) {
+                        const nextIndex = (j + 1) % nodeElements.length;
+                        const nextItem = (this.listType === 'circular' || j < nodeElements.length - 1) ? nodeElements[nextIndex] : null;
+
+                        if (nextItem) {
+                            this._drawArrow(svg, item, nextItem, 'next');
+                            if (this.listType === 'doubly') {
+                                this._drawArrow(svg, nextItem, item, 'prev');
+                            }
+                        } else { // NULL pointer for Singly/Doubly
+                            this._drawNullArrow(svg, item);
+                        }
+                    }
+                });
+            }
+
+            _createNodeElement(node, options = {}) {
+                const nodeEl = document.createElement('div');
+                nodeEl.id = node.id;
+                nodeEl.className = 'node absolute flex rounded-lg bg-blue-500 text-white shadow-md text-lg font-semibold';
+                if (options.highlightId === node.id) {
+                    if (options.type === 'new') nodeEl.classList.add('node-new');
+                    else if (options.type === 'delete') nodeEl.classList.add('node-delete');
+                    else nodeEl.classList.add('node-highlight');
+                }
+                nodeEl.innerHTML = `<div class="w-2/3 flex items-center justify-center node-data">${node.data}</div><div class="w-1/3 flex items-center justify-center opacity-50"></div>`;
+                return nodeEl;
+            }
+
+            _drawArrow(svg, fromItem, toItem, type) {
+                const fromPt = { x: fromItem.x, y: fromItem.y };
+                const toPt = { x: toItem.x, y: toItem.y };
+                const angle = Math.atan2(toPt.y - fromPt.y, toPt.x - fromPt.x);
+
+                const start = { x: fromPt.x + 30 * Math.cos(angle), y: fromPt.y + 30 * Math.sin(angle) };
+                const end = { x: toPt.x - 30 * Math.cos(angle), y: toPt.y - 30 * Math.sin(angle) };
+
+                let pathData;
+                if (type === 'next') {
+                    pathData = `M ${start.x} ${start.y} L ${end.x} ${end.y}`;
+                } else { // 'prev' arrow for doubly
+                    const midX = (start.x + end.x) / 2;
+                    const midY = (start.y + end.y) / 2;
+                    const dx = end.x - start.x;
+                    const dy = end.y - start.y;
+                    const norm = Math.sqrt(dx * dx + dy * dy);
+                    const controlX = midX - 0.2 * norm * (dy / norm);
+                    const controlY = midY + 0.2 * norm * (dx / norm);
+                    pathData = `M ${start.x} ${start.y} Q ${controlX} ${controlY} ${end.x} ${end.y}`;
+                }
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pathData);
+                path.setAttribute('stroke', type === 'next' ? '#64748b' : '#f87171');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('fill', 'none');
+                path.setAttribute('marker-end', `url(#arrowhead-${type})`);
+                svg.appendChild(path);
+                this._ensureMarker(svg, type);
+            }
+
+            _drawNullArrow(svg, item) { /* ... same as before ... */ }
+            _ensureMarker(svg, type) { /* ... same as before ... */ }
+
+            // --- Helpers ---
+            _getValue(id, name = 'Value') {
+                const input = document.getElementById(id);
+                if (input.value === '') {
+                    this._log(`${name} cannot be empty.`, 'error');
+                    return null;
+                }
+                const value = parseInt(input.value, 10);
+                if (isNaN(value)) {
+                    this._log(`${name} must be a number.`, 'error');
+                    return null;
+                }
+                return value;
+            }
+            _log(message, type = 'info') {
+                if (!message) return;
+                const p = document.createElement('p');
+                p.textContent = `> ${message}`;
+                p.className = type === 'error' ? 'text-red-400' : 'text-green-400';
+                this.logOutput.appendChild(p);
+                this.logOutput.scrollTop = this.logOutput.scrollHeight;
+            }
+            _getLastNode() {
+                if (!this.head) return null;
+                let current = this.head;
+                while (current.next && current.next !== this.head) {
+                    current = current.next;
+                }
+                return current;
+            }
+            _cloneList() {
+                if (!this.head) return null;
+                let newHead = null, newCurrent = null;
+                let current = this.head;
+                const map = new Map();
+                do {
+                    const newNode = new Node(current.data);
+                    map.set(current, newNode);
+                    if (!newHead) {
+                        newHead = newNode;
+                        newCurrent = newNode;
+                    } else {
+                        newCurrent.next = newNode;
+                        if (this.listType === 'doubly') newNode.prev = newCurrent;
+                        newCurrent = newNode;
+                    }
+                    current = current.next;
+                } while (current && current !== this.head);
+
+                if (this.listType === 'circular') {
+                    const originalLast = this._getLastNode();
+                    const newLast = map.get(originalLast);
+                    newLast.next = newHead;
+                    if (this.listType === 'doubly') newHead.prev = newLast;
+                }
+                return newHead;
+            }
+        }
+
+        // --- Pseudocode Data ---
+        LinkedListVisualizer.prototype.pseudocode = {
+            insertAtBeginning: [
+                "1. CREATE newNode with data",
+                "2. IF head is NULL THEN",
+                "3.   head = newNode",
+                "4. ELSE",
+                "5.   newNode.next = head",
+                "6.   IF circular THEN lastNode.next = newNode",
+                "7.   head = newNode",
+                "8. END IF"
+            ],
+            insertAtEnd: [
+                "1. CREATE newNode with data",
+                "2. IF head is NULL THEN",
+                "3.   head = newNode",
+                "4. ELSE",
+                "5.   current = FindLastNode()",
+                "6.   current.next = newNode",
+                "7. END IF"
+            ],
+            searchElement: [
+                "1. current = head",
+                "2. WHILE current is not NULL",
+                "3.   IF current.data == key THEN RETURN position",
+                "4.   current = current.next",
+                "5. END WHILE",
+                "6. RETURN not found"
+            ]
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const ll = new LinkedListVisualizer();
+            window.ll = ll; // Make it globally accessible for onclick handlers
+
+            ll.runBtn.onclick = () => ll.runAnimation();
+            ll.stepBtn.onclick = () => ll.executeStep(true);
+            ll.resetBtn.onclick = () => ll.resetAnimation();
+
+            ll.setListType('singly');
+        });
+    </script>
+</body>
+
+</html>
